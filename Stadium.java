@@ -26,10 +26,9 @@ public class Stadium{
 
 
     private int TotalSeats;
-    private int FieldLevelCnt= FieldLevelSeats.size();
-    private int MainLevelCnt= MainLevelSeats.size();
-    private int GrandStandLevelCnt= GrandStandLevelSeats.size();
-
+    private int FieldLevelCnt;
+    private int MainLevelCnt;
+    private int GrandStandLevelCnt;
     
     //Getters
     public int getTotalSeats(){
@@ -75,7 +74,42 @@ public class Stadium{
 
     }
 
+    //Methods
+    public void LoadFieldSeats(){
 
+        for(int i= 0; i < 10; i++){
+
+            FieldLevelSeats.add("F"+i);
+
+        }
+
+        setFieldLevelCnt(FieldLevelSeats.size());
+
+    }
+
+    public void LoadMainSeats(){
+
+        for(int i= 0; i < 10; i++){
+
+            MainLevelSeats.add("M"+i);
+
+        }
+
+        setMainLevelCnt(MainLevelSeats.size());
+
+    }
+
+    public void LoadGrandStandSeats(){
+
+        for(int i= 0; i < 10; i++){
+
+            GrandStandLevelSeats.add("G"+i);
+
+        }
+
+        setGrandStandLevelCnt(GrandStandLevelSeats.size());
+
+    }
 
 
 
