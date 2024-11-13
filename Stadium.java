@@ -77,7 +77,7 @@ public class Stadium{
     //Methods
     public void LoadFieldSeats(){
 
-        for(int i= 0; i < 10; i++){
+        for(int i= 1; i <= 10; i++){
 
             FieldLevelSeats.add("F"+i);
 
@@ -89,7 +89,7 @@ public class Stadium{
 
     public void LoadMainSeats(){
 
-        for(int i= 0; i < 10; i++){
+        for(int i= 1; i <= 10; i++){
 
             MainLevelSeats.add("M"+i);
 
@@ -101,7 +101,7 @@ public class Stadium{
 
     public void LoadGrandStandSeats(){
 
-        for(int i= 0; i < 10; i++){
+        for(int i= 1; i <= 10; i++){
 
             GrandStandLevelSeats.add("G"+i);
 
