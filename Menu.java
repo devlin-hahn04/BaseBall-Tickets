@@ -16,8 +16,8 @@ public class Menu {
         stadium.LoadMainSeats();
         stadium.LoadGrandStandSeats();
 
-        ArrayList<String> ResrevedSeats= new ArrayList<>();
-        HashMap<String, ArrayList<String>> ClientReservationList= new HashMap<>();
+        ArrayList<Seats> ResrevedSeats= new ArrayList<>();
+        HashMap<String, ArrayList<Seats>> ClientReservationList= new HashMap<>();
 
 
         System.out.println("                    Welcome To TicketOrder!\n");
@@ -132,11 +132,11 @@ public class Menu {
                                 SelectedLevel= "Field Level";
 
                                 int cnt= 0;
-                                Iterator<String> iterator = stadium.FieldLevelSeats.iterator();
+                                Iterator<Seats> iterator = stadium.FieldLevelSeats.iterator();
 
                                 while(iterator.hasNext() && cnt < SeatsCnt){
 
-                                    String seat= iterator.next();
+                                    Seats seat= iterator.next();
                                     ResrevedSeats.add(seat);
                                     iterator.remove();
                                     cnt++;
@@ -193,11 +193,11 @@ public class Menu {
                                 SelectedLevel= "Main Level";
 
                                 int cnt= 0;
-                                Iterator<String> iterator = stadium.MainLevelSeats.iterator();
+                                Iterator<Seats> iterator = stadium.MainLevelSeats.iterator();
 
                                 while(iterator.hasNext() && cnt < SeatsCnt){
 
-                                    String seat= iterator.next();
+                                    Seats seat= iterator.next();
                                     ResrevedSeats.add(seat);
                                     iterator.remove();
                                     cnt++;
@@ -253,11 +253,11 @@ public class Menu {
                                 SelectedLevel= "GrandStand Level";
 
                                 int cnt= 0;
-                                Iterator<String> iterator = stadium.GrandStandLevelSeats.iterator();
+                                Iterator<Seats> iterator = stadium.GrandStandLevelSeats.iterator();
 
                                 while(iterator.hasNext() && cnt < SeatsCnt){
 
-                                    String seat= iterator.next();
+                                    Seats seat= iterator.next();
                                     ResrevedSeats.add(seat);
                                     iterator.remove();
                                     cnt++;
@@ -316,7 +316,7 @@ public class Menu {
                 //Adding current transaction to Stadium reservation linkedlist
                 stadium.Reservations.add(ClientReservationList);
 
-                System.out.println("\nSeat reservations: "+ClientReservationList); //Shows hashmap for testing
+                System.out.println("\nSeat reservations map: "+ClientReservationList); //Shows hashmap for testing
                 System.out.println("\nStadium reservation linkedlist: "+stadium.Reservations); //Shows linkedlist for testing
 
                 ResrevedSeats.clear(); //Clears arraylist to make way for next reservations

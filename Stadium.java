@@ -15,14 +15,14 @@ public class Stadium{
     /*Sets to be used to store available
     seats by section (Field, Main, GrandStand)
     */
-    Set<String> FieldLevelSeats= new HashSet<>();
-    Set<String> MainLevelSeats= new HashSet<>();
-    Set<String> GrandStandLevelSeats= new HashSet<>();
+    Set<Seats> FieldLevelSeats= new HashSet<>();
+    Set<Seats> MainLevelSeats= new HashSet<>();
+    Set<Seats> GrandStandLevelSeats= new HashSet<>();
 
     /*LinkedList used to store reservation history
     ()
     */               //Name     Seats Bought
-    LinkedList<HashMap<String, ArrayList<String>>> Reservations= new LinkedList<>();
+    LinkedList<HashMap<String, ArrayList<Seats>>> Reservations= new LinkedList<>();
 
 
     private int TotalSeats;
@@ -77,9 +77,12 @@ public class Stadium{
     //Methods
     public void LoadFieldSeats(){
 
+        int RowCnt= 10;
+
         for(int i= 1; i <= 10; i++){
 
-            FieldLevelSeats.add("F"+i);
+            FieldLevelSeats.add(new Seats("F", String.valueOf(RowCnt), String.valueOf(i)));
+            RowCnt--;
 
         }
 
@@ -89,9 +92,12 @@ public class Stadium{
 
     public void LoadMainSeats(){
 
+        int RowCnt= 10;
+
         for(int i= 1; i <= 10; i++){
 
-            MainLevelSeats.add("M"+i);
+            MainLevelSeats.add(new Seats("M", String.valueOf(RowCnt), String.valueOf(i)));
+            RowCnt--;
 
         }
 
@@ -101,9 +107,12 @@ public class Stadium{
 
     public void LoadGrandStandSeats(){
 
+        int RowCnt= 10;
+
         for(int i= 1; i <= 10; i++){
 
-            GrandStandLevelSeats.add("G"+i);
+            GrandStandLevelSeats.add(new Seats("G", String.valueOf(RowCnt), String.valueOf(i)));
+            RowCnt--;
 
         }
 
