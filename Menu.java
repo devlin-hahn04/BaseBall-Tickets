@@ -130,6 +130,7 @@ public class Menu {
        
                                 FieldValidInput= true;
                                 SelectedLevel= "Field Level";
+                                int price= 300;
 
                                 int cnt= 0;
                                 Iterator<Seats> iterator = stadium.FieldLevelSeats.iterator();
@@ -146,6 +147,7 @@ public class Menu {
                                 stadium.setFieldLevelCnt(stadium.getFieldLevelSeatCount()-SeatsCnt);
        
                                 System.out.println("Chose "+ SeatsCnt+ " seats for Field Level");
+                                System.out.println("Total cost: "+SeatsCnt*price);
        
                             } catch (java.util.InputMismatchException e) {
                                 
@@ -191,6 +193,7 @@ public class Menu {
     
                                 MainValidInput= true;
                                 SelectedLevel= "Main Level";
+                                int price= 120;
 
                                 int cnt= 0;
                                 Iterator<Seats> iterator = stadium.MainLevelSeats.iterator();
@@ -207,6 +210,7 @@ public class Menu {
                                 stadium.setMainLevelCnt(stadium.getMainLevelSeatCount()-SeatsCnt);
     
                                 System.out.println("Chose "+ SeatsCnt+ " seats for Main Level");
+                                System.out.println("Total cost: "+SeatsCnt*price);
     
                             } catch (java.util.InputMismatchException e) {
                                 
@@ -251,6 +255,7 @@ public class Menu {
 
                                 GrandValidInput= true;
                                 SelectedLevel= "GrandStand Level";
+                                int price= 45;
 
                                 int cnt= 0;
                                 Iterator<Seats> iterator = stadium.GrandStandLevelSeats.iterator();
@@ -267,6 +272,7 @@ public class Menu {
                                 stadium.setGrandStandLevelCnt(stadium.getGrandStandLevelSeatCount()-SeatsCnt);
 
                                 System.out.println("Chose "+ SeatsCnt+ " seats for GrandStand Level");
+                                System.out.println("Total cost: "+SeatsCnt*price);
 
                             } catch (java.util.InputMismatchException e) {
                                 
