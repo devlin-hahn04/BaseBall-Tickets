@@ -2,29 +2,95 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
+import java.util.LinkedList;
+import java.util.Queue;
 
 
 public class Menu {
+
+    public void WaitList(Queue<Client> waitlist, Scanner scanner){
+
+        System.out.println("   Ticket Waitlist");
+        System.out.println("Enter client information to add to waitlist");    
+        
+        System.out.println("Client name: ");
+        String Name= scanner.nextLine();
+
+        System.out.println("Client email: ");
+        String Email= scanner.nextLine();
+
+        System.out.println("Client phone number: ");
+        String PhoneNumber= scanner.nextLine();
+
+        waitlist.add(new Client(Name, Email, PhoneNumber));
+
+        System.out.println("Waitlist: ");  //displaying queue of waitlist for testing
+        for (Client client : waitlist) {
+            System.out.println(client);
+        }
+
+        System.out.println("\nThank you, once a reservation is cancelled, you will have your tickets\n");
+
+
+    }
+
+    public String GetValidChoice(Scanner scanner, String prompt){
+
+        String choice= "";
+        boolean ChoiceValid= false;
+
+        while(!ChoiceValid){
+
+            System.out.println(prompt);
+
+            try{
+
+                choice= scanner.nextLine().toUpperCase();
+
+                if(!choice.equals("Y") && !choice.equals("N")){
+
+                    throw new IllegalArgumentException("Choice not valid, choose again");                                        
+
+                }
+
+                ChoiceValid= true;
+
+            } catch (IllegalArgumentException e){
+    
+                System.out.println(e.getMessage());
+
+            }
+
+        }
+        
+        return choice;
+
+    }
+
+
+
+
     
     public static void main(String[] args){
 
         Scanner scanner= new Scanner(System.in);
 
         Stadium stadium= new Stadium();
+        Menu menu= new Menu();
         stadium.LoadFieldSeats();
         stadium.LoadMainSeats();
         stadium.LoadGrandStandSeats();
 
         ArrayList<Seats> ResrevedSeats= new ArrayList<>();
         HashMap<String, ArrayList<Seats>> ClientReservationList= new HashMap<>();
+        Queue<Client> waitlist= new LinkedList<>();
 
 
         System.out.println("                    Welcome To TicketOrder!\n");
 
         int input= -1;
 
-        while(input != 4){
+        menuloop : while(input != 4){
 
             System.out.println("Select Choice:");
             System.out.println("   1)Order Tickets");
@@ -108,8 +174,22 @@ public class Menu {
 
                         if(stadium.getFieldLevelSeatCount() == 0){
 
-                            System.out.println("\n Sorry, tickets in this level are sold out, try another level\n");
-                            continue;
+                            System.out.println("\nSorry, tickets in this level are sold out");
+                            scanner.nextLine();
+                            String choice= menu.GetValidChoice(scanner, "Wish to enter waitlist for this section? (Y or N): ");
+                        
+                            if(choice.equals("Y")){
+
+                                menu.WaitList(waitlist, scanner);
+                                continue menuloop;
+
+                            }
+
+                            else{
+
+                                System.out.println("No ticket will be reserved for you\n");
+                                continue menuloop;
+                            }
 
                         }
 

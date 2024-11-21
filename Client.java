@@ -52,6 +52,12 @@ public class Client {
 
     //Methods
 
+    @Override
+    public String toString(){
+
+        return "Client{name='" + ClientName + "', email='" + ClientEmail + "', phoneNumber='" + ClientPhoneNumber + "'}";
+
+    }
     
     
 
