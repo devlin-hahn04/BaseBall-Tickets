@@ -3,12 +3,14 @@ public class Client {
     private String ClientName;
     private String ClientEmail;
     private String ClientPhoneNumber;
+    private int ClientSeatCnt;
 
-    Client(String ClientName, String ClientEmail, String ClientPhoneNumber){
+    Client(String ClientName, String ClientEmail, String ClientPhoneNumber, int ClientSeatCnt){
 
         this.ClientName= ClientName;
         this.ClientEmail= ClientEmail;
         this.ClientPhoneNumber= ClientPhoneNumber;
+        this.ClientSeatCnt= ClientSeatCnt;
 
     }
 
@@ -31,6 +33,12 @@ public class Client {
 
     }
 
+    public int getClientSeatCnt(){
+
+        return this.ClientSeatCnt;
+
+    }
+
     //Setters
     public void setClientName(String ClientName){
 
@@ -47,6 +55,12 @@ public class Client {
     public void setClientPhoneNumber(String ClientPhoneNumber){
 
         this.ClientPhoneNumber= ClientPhoneNumber;
+
+    }
+
+    public void setClientSeatCnt(int ClientSeatCnt){
+
+        this.ClientSeatCnt= ClientSeatCnt;
 
     }
 

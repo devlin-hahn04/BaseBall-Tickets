@@ -8,7 +8,7 @@ import java.util.Queue;
 
 public class Menu {
 
-    public void WaitList(Queue<Client> waitlist, Scanner scanner){
+    public void WaitList(Queue<Client> FieldWaitList, Scanner scanner, String SelectedLevel){
 
         System.out.println("   Ticket Waitlist");
         System.out.println("Enter client information to add to waitlist");    
@@ -22,13 +22,15 @@ public class Menu {
         System.out.println("Client phone number: ");
         String PhoneNumber= scanner.nextLine();
 
-        waitlist.add(new Client(Name, Email, PhoneNumber));
+        System.out.println("Number of seats desired: ");
+        int SeatsCnt= scanner.nextInt();
 
-        System.out.println("Waitlist: ");  //displaying queue of waitlist for testing
-        for (Client client : waitlist) {
-            System.out.println(client);
+        if(SelectedLevel == "Field Level"){
+
+            FieldWaitList.add(new Client(Name, Email, PhoneNumber, SeatsCnt));
+
+
         }
-
         System.out.println("\nThank you, once a reservation is cancelled, you will have your tickets\n");
 
 
@@ -83,7 +85,7 @@ public class Menu {
 
         ArrayList<Seats> ResrevedSeats= new ArrayList<>();
         HashMap<String, ArrayList<Seats>> ClientReservationList= new HashMap<>();
-        Queue<Client> waitlist= new LinkedList<>();
+        Queue<Client> FieldWaitList= new LinkedList<>();
 
 
         System.out.println("                    Welcome To TicketOrder!\n");
@@ -180,7 +182,7 @@ public class Menu {
                         
                             if(choice.equals("Y")){
 
-                                menu.WaitList(waitlist, scanner);
+                                menu.WaitList(FieldWaitList, scanner, SelectedLevel);
                                 continue menuloop;
 
                             }
@@ -393,7 +395,9 @@ public class Menu {
                 System.out.println("Seats ordered: "+SeatsCnt+ " in "+SelectedLevel);
                 System.out.println(ResrevedSeats);
 
-                Client client= new Client(Name, Email, PhoneNumber);
+                Client client= new Client(Name, Email, PhoneNumber, SeatsCnt);
+
+                System.out.println("Seats resevred by client: "+ client.getClientSeatCnt());
 
                 //Adding current transaction to hashmap to match clients to seats reserved
                 ClientReservationList.put(client.getClientName(), new ArrayList<>(ResrevedSeats));
