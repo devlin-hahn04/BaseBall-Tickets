@@ -8,7 +8,7 @@ import java.util.Queue;
 
 public class Menu {
 
-    public void WaitList(Queue<Client> FieldWaitList, Scanner scanner, String SelectedLevel){
+    public void WaitList(Queue<Client> FieldWaitList, Queue<Client> MainWaitList, Queue<Client> GrandWaitList, Scanner scanner, String SelectedLevel){
 
         System.out.println("   Ticket Waitlist");
         System.out.println("Enter client information to add to waitlist");    
@@ -25,12 +25,30 @@ public class Menu {
         System.out.println("Number of seats desired: ");
         int SeatsCnt= scanner.nextInt();
 
-        if(SelectedLevel == "Field Level"){
+        if(SelectedLevel.equals("Field Level")){
 
             FieldWaitList.add(new Client(Name, Email, PhoneNumber, SeatsCnt));
+            System.out.println("field wait");
+
+        }
+
+        if(SelectedLevel.equals("Main Level")){
+
+            MainWaitList.add(new Client(Name, Email, PhoneNumber, SeatsCnt));
+            System.out.println("Main wait");
 
 
         }
+        
+        if(SelectedLevel.equals("GrandStand Level")){
+
+            GrandWaitList.add(new Client(Name, Email, PhoneNumber, SeatsCnt));
+            System.out.println("Grand wait");
+
+
+        }
+
+
         System.out.println("\nThank you, once a reservation is cancelled, you will have your tickets\n");
 
 
@@ -86,6 +104,8 @@ public class Menu {
         ArrayList<Seats> ResrevedSeats= new ArrayList<>();
         HashMap<String, ArrayList<Seats>> ClientReservationList= new HashMap<>();
         Queue<Client> FieldWaitList= new LinkedList<>();
+        Queue<Client> MainWaitList= new LinkedList<>();
+        Queue<Client> GrandWaitList= new LinkedList<>();
 
 
         System.out.println("                    Welcome To TicketOrder!\n");
@@ -172,6 +192,7 @@ public class Menu {
 
                     case 1:
                         
+                        SelectedLevel= "Field Level";
                         boolean FieldValidInput= false;
 
                         if(stadium.getFieldLevelSeatCount() == 0){
@@ -182,7 +203,7 @@ public class Menu {
                         
                             if(choice.equals("Y")){
 
-                                menu.WaitList(FieldWaitList, scanner, SelectedLevel);
+                                menu.WaitList(FieldWaitList, MainWaitList, GrandWaitList, scanner, SelectedLevel);
                                 continue menuloop;
 
                             }
@@ -249,13 +270,28 @@ public class Menu {
 
                     case 2:
 
-                        boolean MainValidInput= false;
+                        SelectedLevel= "Main Level";
+                        boolean MainValidInput = false;
 
                         if(stadium.getMainLevelSeatCount() == 0){
 
-                            System.out.println("\n Sorry, tickets in this level are sold out, try another level\n");
-                            continue;
+                            System.out.println("\nSorry, tickets in this level are sold out");
+                            scanner.nextLine();
+                            String choice = menu.GetValidChoice(scanner, "Wish to enter waitlist for this section? (Y or N): ");
+                            
+                            if(choice.equals("Y")){
 
+                                menu.WaitList(FieldWaitList, MainWaitList, GrandWaitList, scanner, SelectedLevel);
+                                continue menuloop;
+
+                            } 
+                            
+                            else{
+
+                                System.out.println("No ticket will be reserved for you\n");
+                                continue menuloop;
+                                
+                            }
                         }
 
                         System.out.println("   Main Level Tickets\n");
@@ -311,13 +347,28 @@ public class Menu {
 
                     case 3:
 
+                        SelectedLevel= "GrandStand Level";
                         boolean GrandValidInput= false;
 
-                        if(stadium.getMainLevelSeatCount() == 0){
+                        if(stadium.getGrandStandLevelSeatCount() == 0){
 
-                            System.out.println("\n Sorry, tickets in this level are sold out, try another level\n");
-                            continue;
+                            System.out.println("\nSorry, tickets in this level are sold out");
+                            scanner.nextLine();
+                            String choice = menu.GetValidChoice(scanner, "Wish to enter waitlist for this section? (Y or N): ");
+                            
+                            if(choice.equals("Y")){
 
+                                menu.WaitList(FieldWaitList, MainWaitList, GrandWaitList, scanner, SelectedLevel);
+                                continue menuloop;
+
+                            } 
+                            
+                            else{
+
+                                System.out.println("No ticket will be reserved for you\n");
+                                continue menuloop;
+
+                            }
                         }
 
                         System.out.println("   Main Level Tickets\n");
