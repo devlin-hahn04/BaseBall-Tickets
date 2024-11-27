@@ -22,11 +22,14 @@ public class Menu {
 
                 if(!choice.equals("Y") && !choice.equals("N")){
 
-                    scanner.nextLine();
                     System.out.println("Choice not valid, choose again\n");
                 }
 
-                ChoiceValid= true;
+                else{
+                    
+                    ChoiceValid= true;
+
+                }
 
             } catch (IllegalArgumentException e){
     
