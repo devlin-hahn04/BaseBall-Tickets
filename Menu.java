@@ -2,57 +2,10 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+
 
 
 public class Menu {
-
-    public void WaitList(Queue<Client> FieldWaitList, Queue<Client> MainWaitList, Queue<Client> GrandWaitList, Scanner scanner, String SelectedLevel){
-
-        System.out.println("   Ticket Waitlist");
-        System.out.println("Enter client information to add to waitlist");    
-        
-        System.out.println("Client name: ");
-        String Name= scanner.nextLine();
-
-        System.out.println("Client email: ");
-        String Email= scanner.nextLine();
-
-        System.out.println("Client phone number: ");
-        String PhoneNumber= scanner.nextLine();
-
-        System.out.println("Number of seats desired: ");
-        int SeatsCnt= scanner.nextInt();
-
-        if(SelectedLevel.equals("Field Level")){
-
-            FieldWaitList.add(new Client(Name, Email, PhoneNumber, SeatsCnt));
-            System.out.println("field wait");
-
-        }
-
-        if(SelectedLevel.equals("Main Level")){
-
-            MainWaitList.add(new Client(Name, Email, PhoneNumber, SeatsCnt));
-            System.out.println("Main wait");
-
-
-        }
-        
-        if(SelectedLevel.equals("GrandStand Level")){
-
-            GrandWaitList.add(new Client(Name, Email, PhoneNumber, SeatsCnt));
-            System.out.println("Grand wait");
-
-
-        }
-
-
-        System.out.println("\nThank you, once a reservation is cancelled, you will have your tickets\n");
-
-
-    }
 
     public String GetValidChoice(Scanner scanner, String prompt){
 
@@ -70,7 +23,7 @@ public class Menu {
                 if(!choice.equals("Y") && !choice.equals("N")){
 
                     throw new IllegalArgumentException("Choice not valid, choose again");                                        
-
+                    
                 }
 
                 ChoiceValid= true;
@@ -80,14 +33,82 @@ public class Menu {
                 System.out.println(e.getMessage());
 
             }
-
+            
         }
         
         return choice;
 
     }
+    
+    public int GetValidInput(Scanner scanner, int min, int max, String errorPrompt){
+
+        int input= -1;
+        boolean ValidInput= false;
+        
+        while(!ValidInput){
+    
+            try{
+                
+                input= scanner.nextInt();
+    
+                if(input < 1 || input > 4){
+    
+                    System.out.println("Please Select between 1-4\n");
+                    scanner.nextLine();
+    
+                }
+    
+                ValidInput= true; //exits loop if previous condition is false
+                
+            } catch(java.util.InputMismatchException e){
+               
+                System.out.println("Please enter a number and from 1-4");
+                scanner.nextLine();
+    
+    
+            }
+    
+    
+        }
+
+        return input;
+
+    }
+
+    public int GetValidLevelInput(Scanner scanner, int min, int max){
+
+        boolean ValidInputLevel= false;
+        int levelInput= -1;
+
+        while(!ValidInputLevel){
+    
+            try{
+                
+                levelInput= scanner.nextInt();
+
+                if(levelInput < min || levelInput > max){
+
+                    System.out.println("Please Select between 1-3");
+                    scanner.nextInt();
+
+                }
+
+                ValidInputLevel= true; //exits loop if previous condition is false
+                
+            } catch(java.util.InputMismatchException e){
+               
+                System.out.println("Please enter a number and from 1-3");
+                scanner.nextLine();
+
+            }
 
 
+        }
+
+        return levelInput;
+
+
+    }
 
 
     
@@ -102,11 +123,6 @@ public class Menu {
         stadium.LoadGrandStandSeats();
 
         ArrayList<Seats> ResrevedSeats= new ArrayList<>();
-        HashMap<String, ArrayList<Seats>> ClientReservationList= new HashMap<>();
-        Queue<Client> FieldWaitList= new LinkedList<>();
-        Queue<Client> MainWaitList= new LinkedList<>();
-        Queue<Client> GrandWaitList= new LinkedList<>();
-
 
         System.out.println("                    Welcome To TicketOrder!\n");
 
@@ -120,34 +136,9 @@ public class Menu {
             System.out.println("   3)Show Available Tickets");
             System.out.println("   4)Exit");
             
-            boolean ValidInput= false;
-    
-            while(!ValidInput){
-    
-                try{
-                    
-                    input= scanner.nextInt();
-    
-                    if(input < 1 || input > 4){
-    
-                        throw new IllegalArgumentException("PLease Select between 1-4");
-    
-                    }
-    
-                    ValidInput= true; //exits loop if previous condition is false
-                    
-                } catch(java.util.InputMismatchException e){
-                   
-                    System.out.println("Please enter a number and from 1-4");
-                    scanner.nextLine();
-    
-                }
-    
-    
-            }
+            input = menu.GetValidInput(scanner, 1, 4, "Please select between 1-4\n");
 
-            System.out.println();
-            
+    
 
             //Ordering Tickets Menu
             if(input == 1){
@@ -157,32 +148,7 @@ public class Menu {
                 System.out.println("   2)Main Level: $120, Available Seats: "+stadium.getMainLevelSeatCount());
                 System.out.println("   3)GrandStand Level: $45, Available Seats: "+stadium.getGrandStandLevelSeatCount());
                 
-                boolean ValidInputLevel= false;
-                int levelInput= -1;
-
-                while(!ValidInputLevel){
-    
-                    try{
-                        
-                        levelInput= scanner.nextInt();
-        
-                        if(levelInput < 1 || levelInput > 3){
-        
-                            throw new IllegalArgumentException("Please Select between 1-3");
-        
-                        }
-        
-                        ValidInputLevel= true; //exits loop if previous condition is false
-                        
-                    } catch(java.util.InputMismatchException e){
-                       
-                        System.out.println("Please enter a number and from 1-3");
-                        scanner.nextLine();
-        
-                    }
-        
-        
-                }
+                int levelInput = menu.GetValidLevelInput(scanner, 1, 3);
                 
                 int SeatsCnt= -1;
                 String SelectedLevel= "";
@@ -203,7 +169,7 @@ public class Menu {
                         
                             if(choice.equals("Y")){
 
-                                menu.WaitList(FieldWaitList, MainWaitList, GrandWaitList, scanner, SelectedLevel);
+                                stadium.WaitList(scanner, SelectedLevel);
                                 continue menuloop;
 
                             }
@@ -225,7 +191,7 @@ public class Menu {
                                 
                                 SeatsCnt= scanner.nextInt();
        
-                                if(SeatsCnt < 1 || SeatsCnt > stadium.getFieldLevelSeatCount()){
+                                if(SeatsCnt < 1 || SeatsCnt > stadium.getFieldMaxCapacity()){
        
                                     throw new IllegalArgumentException("Amount not valid, choose again");
        
@@ -281,7 +247,7 @@ public class Menu {
                             
                             if(choice.equals("Y")){
 
-                                menu.WaitList(FieldWaitList, MainWaitList, GrandWaitList, scanner, SelectedLevel);
+                                stadium.WaitList(scanner, SelectedLevel);
                                 continue menuloop;
 
                             } 
@@ -303,7 +269,7 @@ public class Menu {
                                 
                                 SeatsCnt= scanner.nextInt();
     
-                                if(SeatsCnt < 1 || SeatsCnt > stadium.getMainLevelSeatCount()){
+                                if(SeatsCnt < 1 || SeatsCnt > stadium.getMainMaxCapacity()){
     
                                     throw new IllegalArgumentException("Amount not valid, choose again");
     
@@ -358,7 +324,7 @@ public class Menu {
                             
                             if(choice.equals("Y")){
 
-                                menu.WaitList(FieldWaitList, MainWaitList, GrandWaitList, scanner, SelectedLevel);
+                                stadium.WaitList(scanner, SelectedLevel);
                                 continue menuloop;
 
                             } 
@@ -380,7 +346,7 @@ public class Menu {
                                 
                                 SeatsCnt= scanner.nextInt();
 
-                                if(SeatsCnt < 1 || SeatsCnt > stadium.getGrandStandLevelSeatCount()){
+                                if(SeatsCnt < 1 || SeatsCnt > stadium.getGrandMaxCapacity()){
 
                                     throw new IllegalArgumentException("Amount not valid, choose again");
 
@@ -446,21 +412,44 @@ public class Menu {
                 System.out.println("Seats ordered: "+SeatsCnt+ " in "+SelectedLevel);
                 System.out.println(ResrevedSeats);
 
-                Client client= new Client(Name, Email, PhoneNumber, SeatsCnt);
+                Client client= new Client(Name, Email, PhoneNumber, SeatsCnt, SeatsCnt,ResrevedSeats);
 
                 System.out.println("Seats resevred by client: "+ client.getClientSeatCnt());
 
                 //Adding current transaction to hashmap to match clients to seats reserved
-                ClientReservationList.put(client.getClientName(), new ArrayList<>(ResrevedSeats));
+                stadium.ClientReservationList.put(client.getClientName(), new ArrayList<>(ResrevedSeats));
 
-                stadium.Reservations.clear(); //clearing to add updated map of clients-reservations
                 //Adding current transaction to Stadium reservation linkedlist
-                stadium.Reservations.add(ClientReservationList);
+                stadium.Reservations.add(new HashMap<>(stadium.ClientReservationList));
 
-                System.out.println("\nSeat reservations map: "+ClientReservationList); //Shows hashmap for testing
+                //Adding current transaction to reservation history stack
+
+                HashMap<String, ArrayList<Seats>>currentReservation= new HashMap<>(stadium.ClientReservationList);
+
+                if(SelectedLevel == "Field Level"){
+
+                    stadium.FieldHistory.push(new HashMap<>(currentReservation));
+
+                }
+
+                if(SelectedLevel == "Main Level"){
+
+                    stadium.MainHistory.push(new HashMap<>(currentReservation));
+
+                }
+
+                if(SelectedLevel == "GrandStand Level"){
+
+                    stadium.GrandStandHistory.push(new HashMap<>(currentReservation));
+
+                }
+
+                System.out.println("\nSeat reservations map: "+stadium.ClientReservationList); //Shows hashmap for testing
                 System.out.println("\nStadium reservation linkedlist: "+stadium.Reservations); //Shows linkedlist for testing
 
-                ResrevedSeats.clear(); //Clears arraylist to make way for next reservations
+                //clearing references after adding stack
+                stadium.ClientReservationList.clear(); 
+                ResrevedSeats.clear(); 
                 
 
                 //displaying leftover seats for testing
@@ -472,7 +461,52 @@ public class Menu {
             }
 
             //Cancel Reservation Menu
+            if(input == 2){
 
+                System.out.println("   Cancel Reservation\n");
+                System.out.println("Enter section to remove reservation from");
+                System.out.println("   1)Field Level");
+                System.out.println("   2)Main Level");
+                System.out.println("   3)GrandStand Level");
+
+                input = menu.GetValidLevelInput(scanner, 1, 4);
+
+                if(input == 1){
+
+                    System.out.println("field cancel");
+
+                    stadium.Cancel(stadium.FieldHistory, stadium.FieldWaitList, stadium.FieldLevelSeats);
+
+                    //begin making method in stadium class for cancel
+                    //pass on the section that was chosen to decide which stack to access
+                    //check if stack is empty 
+
+                }
+
+                if(input  == 2){
+
+                    System.out.println("main cancel");
+                    stadium.Cancel(stadium.MainHistory, stadium.MainWaitList, stadium.MainLevelSeats);
+
+
+                }
+
+                if(input == 3){
+
+                    System.out.println("grand cancel");
+                    stadium.Cancel(stadium.GrandStandHistory, stadium.GrandWaitList, stadium.GrandStandLevelSeats);
+
+
+                }
+
+               
+
+
+
+
+
+
+            }
 
 
 

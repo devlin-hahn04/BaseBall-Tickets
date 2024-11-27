@@ -1,3 +1,5 @@
+
+
 public class Seats {
     
     private String SeatSection;
@@ -9,7 +11,7 @@ public class Seats {
         this.SeatSection= SeatSection;
         this.SeatRow= SeatRow;
         this.SeatNumber= SeatNumber;
-
+        
     }
 
     // Setters
