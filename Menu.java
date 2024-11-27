@@ -507,12 +507,30 @@ public class Menu {
 
 
             }
-
-
-
-
-
             //Showing Available Tickets Menu
+            if(input == 3){
+                System.out.println("   Available Tickets: \n");
+            
+                // Display available seats for Field Level
+                System.out.println("Field Level: $" + 300 + ", Available Seats: " + stadium.getFieldLevelSeatCount());
+                System.out.println("Seat Numbers: " + stadium.FieldLevelSeats);
+            
+                // Display available seats for Main Level
+                System.out.println("\nMain Level: $" + 120 + ", Available Seats: " + stadium.getMainLevelSeatCount());
+                System.out.println("Seat Numbers: " + stadium.MainLevelSeats);
+            
+                // Display available seats for GrandStand Level
+                System.out.println("\nGrandStand Level: $" + 45 + ", Available Seats: " + stadium.getGrandStandLevelSeatCount());
+                System.out.println("Seat Numbers: " + stadium.GrandStandLevelSeats);
+            
+                System.out.println(); // For cleaner formatting
+            }
+
+
+
+
+
+            
             
 
         }
