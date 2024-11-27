@@ -1,11 +1,24 @@
-
+/*===== SEATS class explanation ======
+ * 
+ * The Seats class is a simple class that is used in bulk in the
+ * Stadium class to identify each object. Each Seat has its own 
+ * arguments that seperates it from others:
+ *    > Section
+ *    > Row
+ *    > Number
+ * 
+ =================================*/
 
 public class Seats {
-    
+    /*=== Seats properties ===*/
     private String SeatSection;
     private String SeatRow;
     private String SeatNumber;
+    /*======================*/
 
+    /*=== Seats Constructor ===
+     * @param Section, Row, Number
+       =======================*/
     public Seats(String SeatSection, String SeatRow, String SeatNumber){
 
         this.SeatSection= SeatSection;
@@ -14,7 +27,7 @@ public class Seats {
         
     }
 
-    // Setters
+    /*=== Setters ===*/
     public void setSeatSection(String SeatSection) {
         this.SeatSection= SeatSection;
     }
@@ -26,8 +39,9 @@ public class Seats {
     public void setSeatNumber(String SeatNumber) {
         this.SeatNumber= SeatNumber;
     }
+    /*==============*/
 
-    // Getters
+    /*=== Getters ===*/
     public String getSeatSection() {
         return SeatSection;
     }
@@ -39,13 +53,16 @@ public class Seats {
     public String getSeatNumber() {
         return SeatNumber;
     }
+    /*===============*/
 
-    //Methods
+    
+    /*=== Methods ===*/
 
     @Override
-    public String toString() {
+    public String toString() { //returns the Seat information to administer its reservation
         return SeatSection+"("+SeatRow+"-"+SeatNumber+")";
     }
+    /*==============*/
 
 
 }

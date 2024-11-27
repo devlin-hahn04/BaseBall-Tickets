@@ -1,14 +1,30 @@
 import java.util.ArrayList;
 
+/*===== CLIENT class explanation =====
+ *
+ * The Client class is a simpler class that is used for managing the information
+ * of different users that plan to do reservations at the Stadium. When 
+ * getting the user's information to become a Client, they are asked:
+ *    > Name
+ *    > Email
+ *    > Phone number
+ *
+  =================================*/
+
 public class Client {
 
+    /*=== Client properties ===*/
     private String ClientName;
     private String ClientEmail;
     private String ClientPhoneNumber;
     private int ClientSeatCnt;
-    private int ClientOriginalSeatCnt;
+    private int ClientOriginalSeatCnt; //Used in Stadium for reservation cancelations
     private ArrayList<Seats> ClientSeats;
+    /*=====================*/
 
+    /*=== Client Constructor ===
+     * @param Name, Email, Phone number, amount of seats, original amount of seats, reserved seats
+      =======================*/
     Client(String ClientName, String ClientEmail, String ClientPhoneNumber, int ClientSeatCnt, int ClientOriginalSeatCnt, ArrayList<Seats> ClientSeats){
 
         this.ClientName= ClientName;
@@ -20,7 +36,7 @@ public class Client {
 
     }
 
-    //Getters
+    /*=== Getters ===*/
     public String getClientName(){
 
         return this.ClientName;
@@ -54,8 +70,9 @@ public class Client {
     public ArrayList<Seats> getClientSeats(){
         return ClientSeats;
     }
+    /*==============*/
     
-    //Setters
+    /*=== Setters ===*/
     public void setClientName(String ClientName){
         
         this.ClientName= ClientName;
@@ -83,16 +100,17 @@ public class Client {
     public void setClientSeats(ArrayList<Seats> ClientSeats){
         this.ClientSeats= ClientSeats;
     }
+    /*==============*/
     
     
-    //Methods
-    
+    /*=== Methods ===*/
     @Override
-    public String toString(){
+    public String toString(){ //Returns the Client's information for easy view
 
         return "Client{name='" + ClientName + "', email='" + ClientEmail + "', phoneNumber='" + ClientPhoneNumber + "'}";
 
     }
+    /*=============*/
     
     
 

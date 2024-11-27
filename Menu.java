@@ -3,16 +3,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-
+/*===== MENU class =====
+ * 
+ * The Menu class is the main class for this proyect and uses
+ * the Stadium class for its reservation system. The Menu allows
+ * the Client to order tickets, show all available tickets, enter a
+ * waitlist if they wish to wait for a Seat, and to cancel reservations.
+ * 
+  =====================*/
 
 public class Menu {
 
-    public String GetValidChoice(Scanner scanner, String prompt){
+    public String GetValidChoice(Scanner scanner, String prompt){ //Returns Client's choice once validated
 
         String choice= "";
         boolean ChoiceValid= false;
 
-        while(!ChoiceValid){
+        while(!ChoiceValid){ //Will loop until the Client inputs "Y" or "N"
 
             System.out.println(prompt);
 
@@ -43,12 +50,12 @@ public class Menu {
 
     }
     
-    public int GetValidInput(Scanner scanner, int min, int max, String errorPrompt){
+    public int GetValidInput(Scanner scanner, int min, int max, String errorPrompt){ //Returns Client's Input once validated
 
         int input= -1;
         boolean ValidInput= false;
         
-        while(!ValidInput){
+        while(!ValidInput){ //Will loop until the Clients inputs a number between 1-4
     
             try{
                 
@@ -78,12 +85,12 @@ public class Menu {
 
     }
 
-    public int GetValidLevelInput(Scanner scanner, int min, int max){
+    public int GetValidLevelInput(Scanner scanner, int min, int max){ //Returns Client's Level Input once validated
 
         boolean ValidInputLevel= false;
         int levelInput= -1;
 
-        while(!ValidInputLevel){
+        while(!ValidInputLevel){ //Will loop until the Client inputs a number between 1-3
     
             try{
                 
@@ -126,17 +133,32 @@ public class Menu {
     
         String SelectedLevel = "";
     
+        /*===Switch summuary ===
+         * The Switch is used to handle each case of each level.
+         * Each case is managed similarly than the other, with
+         * their main difference being what level is being perfomed
+         * on. In summuary, the Switch does as follows:
+         *    > Verifies if the level is fully reserved. If so, allow the
+         *      person to enter a waitlist or not reserve there.
+         *    > Starts a validation while loop of the amount of Seats
+         *      to reserve.
+         *    > Once validated, it reserves all those Seats, updates
+         *      that level, and provides feedback of the purchase.
+         * Additional comments where offered in the Field Level case,
+         * providing a more in-depth visualization of it if needed
+         * alongside the explanation given beforehand.
+          =====================*/
         switch (levelInput) {
-            case 1:
+            case 1: //Field level
                 SelectedLevel = "Field Level";
                 boolean FieldValidInput = false;
     
-                if (stadium.getFieldLevelSeatCount() == 0) {
+                if (stadium.getFieldLevelSeatCount() == 0) { //The Field Level is fully reserved
                     System.out.println("\nSorry, tickets in this level are sold out");
                     scanner.nextLine();
                     String choice = menu.GetValidChoice(scanner, "Wish to enter waitlist for this section? (Y or N): ");
     
-                    if (choice.equals("Y")) {
+                    if (choice.equals("Y")) { //stadium.WaitList() will add them to the waitlist after asking for seats and info
                         stadium.WaitList(scanner, SelectedLevel, stadium.getFieldMaxCapacity());
                         return; // Skip rest of the method and go back to the main loop
                     } else {
@@ -145,7 +167,7 @@ public class Menu {
                     }
                 }
     
-                while (!FieldValidInput) {
+                while (!FieldValidInput) { //Will continue looping until given a valid amount of Seats
 
                     System.out.println("   Field Level Tickets\n");
                     System.out.println("Enter amount of seats to reserve: ");
@@ -158,6 +180,7 @@ public class Menu {
                             throw new IllegalArgumentException("Amount not valid, choose again");
                         }
     
+                        //At this point, the Seats ordered where valid
                         FieldValidInput = true;
                         SelectedLevel = "Field Level";
                         int price = 300;
@@ -165,15 +188,17 @@ public class Menu {
                         int cnt = 0;
                         Iterator<Seats> iterator = stadium.FieldLevelSeats.iterator();
     
-                        while (iterator.hasNext() && cnt < SeatsCnt) {
+                        while (iterator.hasNext() && cnt < SeatsCnt) { //Adds the amount of Seats to the reserved ones
                             Seats seat = iterator.next();
                             reservedSeats.add(seat);
                             iterator.remove();
                             cnt++;
                         }
     
+                        //Updates the available Seats amount
                         stadium.setFieldLevelCnt(stadium.getFieldLevelSeatCount() - SeatsCnt);
     
+                        //Returns feedback of purchase
                         System.out.println("Chose " + SeatsCnt + " seats for Field Level");
                         System.out.println("Total cost: " + SeatsCnt * price);
     
@@ -186,7 +211,7 @@ public class Menu {
                 }
                 break;
     
-            case 2:
+            case 2: //Main Level
                 SelectedLevel = "Main Level";
                 boolean MainValidInput = false;
     
@@ -243,7 +268,7 @@ public class Menu {
                 }
                 break;
     
-            case 3:
+            case 3: //GrandStand Level
                 SelectedLevel = "GrandStand Level";
                 boolean GrandValidInput = false;
     
@@ -304,7 +329,7 @@ public class Menu {
                 break;
         }
     
-        // Client information and reservation summary
+        /*=== Client information and reservation summary ===*/
         System.out.println("   Client Reservation Information: \n");
         scanner.nextLine();
     
@@ -323,9 +348,12 @@ public class Menu {
         System.out.println(PhoneNumber);
         System.out.println("Seats ordered: " + SeatsCnt + " in " + SelectedLevel);
         System.out.println(reservedSeats);
+        /*===========================================*/
     
+        //Confirms the user as a Client
         Client client = new Client(Name, Email, PhoneNumber, SeatsCnt, SeatsCnt, reservedSeats);
     
+        //Shows the Client's Seats
         System.out.println("Seats reserved by client: " + client.getClientSeatCnt());
     
         // Adding current transaction to hashmap to match clients to seats reserved
@@ -362,15 +390,17 @@ public class Menu {
         System.out.println("Seats left in GrandStand Level: " + stadium.getGrandStandLevelSeatCount() + "\n");
     }
 
-    public static void handleCancelReservation(Scanner scanner, Menu menu, Stadium stadium) {
+    public static void handleCancelReservation(Scanner scanner, Menu menu, Stadium stadium) { //Handles the cancelled reservation in a Client's given level
         System.out.println("   Cancel Reservation\n");
         System.out.println("Enter section to remove reservation from");
         System.out.println("   1)Field Level");
         System.out.println("   2)Main Level");
         System.out.println("   3)GrandStand Level");
     
+        //Lets Client decide what reservation to cancel from
         int input = menu.GetValidLevelInput(scanner, 1, 4);
     
+        //Removes last reservation of given level
         if (input == 1) {
             System.out.println("Field cancel");
             stadium.Cancel(stadium.FieldHistory, stadium.FieldWaitList, stadium.FieldLevelSeats);
@@ -384,7 +414,7 @@ public class Menu {
     }
 
     
-    public static void showAvailableTickets(Stadium stadium) {
+    public static void showAvailableTickets(Stadium stadium) { //returns each level's available seats and its price
         System.out.println("   Available Tickets: \n");
     
         // Display available seats for Field Level
@@ -403,10 +433,16 @@ public class Menu {
     }
 
 
-    
+    /*=== Main method ===
+     * It runs the whole Menu using past defined functions. It allows
+     * to order and cancel available tickets, as well as show the
+     * available tickets and enter a waitlist for Seats. Once finished,
+     * you can Exit to close the Menu and the proyect.
+      ==================*/
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
     
+        /*=== Menu preparation ===*/
         Stadium stadium = new Stadium();
         Menu menu = new Menu();
         stadium.LoadFieldSeats();
@@ -414,12 +450,13 @@ public class Menu {
         stadium.LoadGrandStandSeats();
     
         ArrayList<Seats> reservedSeats = new ArrayList<>();
+        /*======================*/
     
         System.out.println("                    Welcome To TicketOrder!\n");
     
         int input = -1;
     
-        mainloop : while (input != 4) {
+        mainloop : while (input != 4) { //Will keep looping until the Menu is left
             System.out.println("Select Choice:");
             System.out.println("   1)Order Tickets");
             System.out.println("   2)Cancel Reservation");
@@ -428,7 +465,7 @@ public class Menu {
     
             input = menu.GetValidInput(scanner, 1, 4, "Please select between 1-4\n");
     
-            // Ordering Tickets Menu - Call to orderTickets()
+            // Ordering Tickets Menu
             if (input == 1) {
                 orderTickets(scanner, stadium, menu, reservedSeats);
             }
@@ -437,7 +474,8 @@ public class Menu {
             if (input == 2) {
                 handleCancelReservation(scanner, menu, stadium);
             }
-    
+            
+            // Available Tickets Menu
             if (input == 3) {
                 showAvailableTickets(stadium);
             }
