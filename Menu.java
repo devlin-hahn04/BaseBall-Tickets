@@ -134,7 +134,7 @@ public class Menu {
                     String choice = menu.GetValidChoice(scanner, "Wish to enter waitlist for this section? (Y or N): ");
     
                     if (choice.equals("Y")) {
-                        stadium.WaitList(scanner, SelectedLevel);
+                        stadium.WaitList(scanner, SelectedLevel, stadium.getFieldMaxCapacity());
                         return; // Skip rest of the method and go back to the main loop
                     } else {
                         System.out.println("No ticket will be reserved for you\n");
@@ -193,7 +193,7 @@ public class Menu {
                     String choice = menu.GetValidChoice(scanner, "Wish to enter waitlist for this section? (Y or N): ");
     
                     if (choice.equals("Y")) {
-                        stadium.WaitList(scanner, SelectedLevel);
+                        stadium.WaitList(scanner, SelectedLevel, stadium.getMainMaxCapacity());
                         return; // Skip rest of the method and go back to the main loop
                     } else {
                         System.out.println("No ticket will be reserved for you\n");
@@ -250,7 +250,7 @@ public class Menu {
                     String choice = menu.GetValidChoice(scanner, "Wish to enter waitlist for this section? (Y or N): ");
     
                     if (choice.equals("Y")) {
-                        stadium.WaitList(scanner, SelectedLevel);
+                        stadium.WaitList(scanner, SelectedLevel, stadium.getGrandMaxCapacity());
                         return; // Skip rest of the method and go back to the main loop
                     } else {
                         System.out.println("No ticket will be reserved for you\n");

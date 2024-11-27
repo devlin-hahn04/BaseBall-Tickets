@@ -153,7 +153,7 @@ public class Stadium{
     }
 
 
-    public void WaitList(Scanner scanner, String SelectedLevel){
+    public void WaitList(Scanner scanner, String SelectedLevel, int MaxCapacity){
 
         System.out.println("   Ticket Waitlist");
         System.out.println("Enter client information to add to waitlist");    
@@ -168,7 +168,36 @@ public class Stadium{
         String PhoneNumber= scanner.nextLine();
 
         System.out.println("Number of seats desired: ");
-        int SeatsCnt= scanner.nextInt();   //add validation and for it to be less than max capacity 
+        int SeatsCnt=0;
+
+        while(true){
+
+            if(scanner.hasNextInt()){
+
+                SeatsCnt= scanner.nextInt();
+
+                if(SeatsCnt >= 1 && SeatsCnt <= MaxCapacity){
+
+                    break;
+
+                }
+
+                else{
+
+                    System.out.println("Invalid amount of seats wanted, try again");
+
+                }
+
+            }
+
+            else{
+
+                System.out.println("Invalid data, try again");
+                scanner.next();
+
+            }
+
+        }
 
         if(SelectedLevel.equals("Field Level")){
 
