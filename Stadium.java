@@ -375,7 +375,6 @@ public class Stadium{
         }
 
         SectionSeats.addAll(CancelTickets);  //Adding extra tickets leftover if seats wanted from queue is fullfilled 
-        System.out.println("Updated section: "+SectionSeats);
 
         //Frees the new Seats to the respective level
         if(SectionSeats == FieldLevelSeats){
