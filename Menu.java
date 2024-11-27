@@ -22,8 +22,8 @@ public class Menu {
 
                 if(!choice.equals("Y") && !choice.equals("N")){
 
-                    throw new IllegalArgumentException("Choice not valid, choose again");                                        
-                    
+                    scanner.nextLine();
+                    System.out.println("Choice not valid, choose again\n");
                 }
 
                 ChoiceValid= true;
@@ -51,7 +51,7 @@ public class Menu {
                 
                 input= scanner.nextInt();
     
-                if(input < 1 || input > 4){
+                if(input < min || input > max){
     
                     System.out.println("Please Select between 1-4\n");
                     scanner.nextLine();
@@ -89,7 +89,8 @@ public class Menu {
                 if(levelInput < min || levelInput > max){
 
                     System.out.println("Please Select between 1-3");
-                    scanner.nextInt();
+                    levelInput= scanner.nextInt();
+                    
 
                 }
 
@@ -115,10 +116,11 @@ public class Menu {
         System.out.println("   1)Field Level: $300, Available Seats: " + stadium.getFieldLevelSeatCount());
         System.out.println("   2)Main Level: $120, Available Seats: " + stadium.getMainLevelSeatCount());
         System.out.println("   3)GrandStand Level: $45, Available Seats: " + stadium.getGrandStandLevelSeatCount());
+        
+        int SeatsCnt = -1;
     
         int levelInput = menu.GetValidLevelInput(scanner, 1, 3);
     
-        int SeatsCnt = -1;
         String SelectedLevel = "";
     
         switch (levelInput) {
@@ -140,12 +142,14 @@ public class Menu {
                     }
                 }
     
-                System.out.println("   Field Level Tickets\n");
-                System.out.println("Enter amount of seats to reserve: ");
-    
                 while (!FieldValidInput) {
+
+                    System.out.println("   Field Level Tickets\n");
+                    System.out.println("Enter amount of seats to reserve: ");
+        
                     try {
                         SeatsCnt = scanner.nextInt();
+                        
     
                         if (SeatsCnt < 1 || SeatsCnt > stadium.getFieldMaxCapacity()) {
                             throw new IllegalArgumentException("Amount not valid, choose again");
