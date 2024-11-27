@@ -355,6 +355,46 @@ public class Menu {
         System.out.println("Seats left in GrandStand Level: " + stadium.getGrandStandLevelSeatCount() + "\n");
     }
 
+    public static void handleCancelReservation(Scanner scanner, Menu menu, Stadium stadium) {
+        System.out.println("   Cancel Reservation\n");
+        System.out.println("Enter section to remove reservation from");
+        System.out.println("   1)Field Level");
+        System.out.println("   2)Main Level");
+        System.out.println("   3)GrandStand Level");
+    
+        int input = menu.GetValidLevelInput(scanner, 1, 4);
+    
+        if (input == 1) {
+            System.out.println("Field cancel");
+            stadium.Cancel(stadium.FieldHistory, stadium.FieldWaitList, stadium.FieldLevelSeats);
+        } else if (input == 2) {
+            System.out.println("Main cancel");
+            stadium.Cancel(stadium.MainHistory, stadium.MainWaitList, stadium.MainLevelSeats);
+        } else if (input == 3) {
+            System.out.println("GrandStand cancel");
+            stadium.Cancel(stadium.GrandStandHistory, stadium.GrandWaitList, stadium.GrandStandLevelSeats);
+        }
+    }
+
+    
+    public static void showAvailableTickets(Stadium stadium) {
+        System.out.println("   Available Tickets: \n");
+    
+        // Display available seats for Field Level
+        System.out.println("Field Level: $" + 300 + ", Available Seats: " + stadium.getFieldLevelSeatCount());
+        System.out.println("Seat Numbers: " + stadium.FieldLevelSeats);
+    
+        // Display available seats for Main Level
+        System.out.println("\nMain Level: $" + 120 + ", Available Seats: " + stadium.getMainLevelSeatCount());
+        System.out.println("Seat Numbers: " + stadium.MainLevelSeats);
+    
+        // Display available seats for GrandStand Level
+        System.out.println("\nGrandStand Level: $" + 45 + ", Available Seats: " + stadium.getGrandStandLevelSeatCount());
+        System.out.println("Seat Numbers: " + stadium.GrandStandLevelSeats);
+    
+        System.out.println(); // For cleaner formatting
+    }
+
 
     
     public static void main(String[] args) {
@@ -388,47 +428,11 @@ public class Menu {
     
             // Cancel Reservation Menu
             if (input == 2) {
-                System.out.println("   Cancel Reservation\n");
-                System.out.println("Enter section to remove reservation from");
-                System.out.println("   1)Field Level");
-                System.out.println("   2)Main Level");
-                System.out.println("   3)GrandStand Level");
-    
-                input = menu.GetValidLevelInput(scanner, 1, 4);
-    
-                if (input == 1) {
-                    System.out.println("field cancel");
-                    stadium.Cancel(stadium.FieldHistory, stadium.FieldWaitList, stadium.FieldLevelSeats);
-                }
-    
-                if (input == 2) {
-                    System.out.println("main cancel");
-                    stadium.Cancel(stadium.MainHistory, stadium.MainWaitList, stadium.MainLevelSeats);
-                }
-    
-                if (input == 3) {
-                    System.out.println("grand cancel");
-                    stadium.Cancel(stadium.GrandStandHistory, stadium.GrandWaitList, stadium.GrandStandLevelSeats);
-                }
+                handleCancelReservation(scanner, menu, stadium);
             }
     
-            // Showing Available Tickets Menu
             if (input == 3) {
-                System.out.println("   Available Tickets: \n");
-    
-                // Display available seats for Field Level
-                System.out.println("Field Level: $" + 300 + ", Available Seats: " + stadium.getFieldLevelSeatCount());
-                System.out.println("Seat Numbers: " + stadium.FieldLevelSeats);
-    
-                // Display available seats for Main Level
-                System.out.println("\nMain Level: $" + 120 + ", Available Seats: " + stadium.getMainLevelSeatCount());
-                System.out.println("Seat Numbers: " + stadium.MainLevelSeats);
-    
-                // Display available seats for GrandStand Level
-                System.out.println("\nGrandStand Level: $" + 45 + ", Available Seats: " + stadium.getGrandStandLevelSeatCount());
-                System.out.println("Seat Numbers: " + stadium.GrandStandLevelSeats);
-    
-                System.out.println(); // For cleaner formatting
+                showAvailableTickets(stadium);
             }
         }
     }
