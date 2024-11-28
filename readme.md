@@ -63,6 +63,38 @@ Implementation Details
 
         Outputs include confirmation messages for successful reservations, cancellation updates, the current waitlist status, and available seat summaries. If a reservation or cancellation is successfully processed, the system displays feedback to the operator, confirming the action.
 
+    Results:
+	    The Ticket Reservation System provides clear outputs at each stage of the reservation process, guiding the operator through seat reservations, cancellations, and the management of waitlists. Below are the types of results the operator can expect:
+	        1. Reservation Confirmation
+                When a reservation is successfully made, the system will display a confirmation message showing:
+                    The client's name, email, and phone number.
+                    The total cost of the reservation.
+
+            2. Waitlist Management
+                If a section is fully booked, the operator will be prompted to add the client to the waitlist.
+
+	        3. Reservation Cancellation
+                When a reservation is canceled, the system will:
+                    a)Free up the seats, making them available again for future reservations or for clients on the waitlist.
+                    b)Notify the operator of the successful cancellation.
+                    c)If seats are available from the cancellation, the system will offer those seats to clients on the waitlist, one by one, in the order they were added. The system will show the following:
+                        Whether the client's seat request was fully fulfilled or partially fulfilled.
+
+	        4. View Available Seats
+                The system will allow the operator to view the current seat availability across all sections. The output will display:
+                    The total number of available seats in each section.
+                    
+	        5. Invalid Input Handling
+                If an operator enters invalid data (such as an invalid seat number or negative number of seats), the system will display an error message and prompt for correct input.
+
+
+
+
+
+
+
+
+
 
 
 Evaluations:
