@@ -10,17 +10,25 @@ import java.util.Iterator;
 
 /*===== STADIUM class explanation =====
  * 
- * The Stadium class is a complex class which uses the classes
- * Seat and Client in order to reserve the seats in this Stadium.
- * This class also allows waiting for Seats in its waitlist as well as
- * cancelations of reservations done by Clients. This Stadium offers
- * three type of Seats:
- *    > Field Level: (Cost - $300, Max Capacity - 500)
- *    > Main Level: (Cost - $120, Max Capacity - 1000)
- *    > Grandstand Level: (Cost - $45, Max Capacity - 2000)
+ * The Stadium class is designed to manage seat reservations, cancellations, and a waitlist system for a stadium with three levels of seating. 
+ * It provides functionality to load seats into different levels, manage client reservations, handle cancellations, and waitlist clients when no seats are available.
+ * The class uses various data structures to efficiently store and manage the seats, reservations, cancellations, and waitlists:
  * 
-   =================================*/
-
+ *    -Set<Seats> - Used for storing seats in each of the three levels (Field, Main, and Grandstand). A Set is chosen because it prevents duplicate entries, ensuring that each seat is unique.
+ *    -Queue<Client> - Used to store clients waiting for a seat in the respective levels. A Queue is used because it processes clients in a first-come, first-served manner, which is ideal for a waitlist system.
+ *    -Stack<HashMap<String, ArrayList<Seats>>> - Used for managing reservation history. Stacks allow for easy access to the last reservation made, which is needed for cancellation purposes.
+ *    -LinkedList<HashMap<String, ArrayList<Seats>>> - Used to store current reservations, where each entry maps a client’s name to the list of seats they reserved. A LinkedList is chosen because it allows efficient removal and addition of elements, particularly when reservations need to be cancelled or modified.
+ *    -HashMap<String, ArrayList<Seats>> - This is used to pair a client with their reserved seats, ensuring that each client’s reservation is easy to access and modify.
+ * 
+ * The stadium manages three types of seats, each with its own capacity and pricing:
+ *    -Field Level: Cost - $300, Max Capacity - 500
+ *    -Main Level: Cost - $120, Max Capacity - 1000
+ *    -Grandstand Level: Cost - $45, Max Capacity - 2000
+ * 
+ * The class provides methods for adding clients to the waitlist, canceling reservations, and offering available seats to waiting clients.
+ * 
+ * =================================
+ */
 public class Stadium{
 
     /*=== Stadium properties ===*/
@@ -191,13 +199,37 @@ public class Stadium{
 
     }
 
-    /*=== WaitList method ===
-     * @param scanner, level, max capacity
-     * When a Client is sent to the WaitList, it asks for its information
-     * in order to add them. If there is n Clients in that level's waitlist
-     * before this Client, they will be the (n + 1)th person to be offered
-     * a seat after a Seat reservation in that level is cancelled.
-      ====================*/
+/*===== WaitList Method =====
+ * 
+ * The WaitList method adds a client to the waitlist for a specific seating level. 
+ * It prompts the user for the client’s information, including their name, email, phone number, 
+ * and the number of seats desired. It then checks if the requested number of seats is valid 
+ * (within the range of available seats for the selected level). If valid, the client is added to 
+ * the appropriate waitlist based on the selected seating level (Field Level, Main Level, or GrandStand Level).
+ * 
+ * Purpose:
+ * - To gather client information and add them to the waitlist for a specific seating level.
+ * - Ensures clients are added to the correct waitlist based on their desired seating level.
+ * - Validates input to ensure that the number of seats requested is within the maximum capacity.
+ * 
+ * Parameters:
+ * - scanner: A Scanner object used for reading user input from the console.
+ * - SelectedLevel: A string representing the seating level (Field Level, Main Level, or GrandStand Level) 
+ *   where the client wishes to be added to the waitlist.
+ * - MaxCapacity: An integer representing the maximum number of seats available for the selected seating level.
+ * 
+ * Return Value:
+ * - void: This method does not return a value. It modifies the waitlists by adding clients to the 
+ *   respective waitlist based on the selected seating level.
+ * 
+ * Calls:
+ * - None: This method directly adds the client to one of the predefined waitlists based on the selected level.
+ * 
+ * Called By:
+ * - The Menu system or a user interface: The `WaitList` method is called when a user opts to join the waitlist 
+ *   for a specific seating level in the ticket reservation system.
+ */
+
     public void WaitList(Scanner scanner, String SelectedLevel, int MaxCapacity){
 
         System.out.println("   Ticket Waitlist");
@@ -250,24 +282,19 @@ public class Stadium{
         if(SelectedLevel.equals("Field Level")){
 
             FieldWaitList.add(new Client(Name, Email, PhoneNumber, SeatsCnt, SeatsCnt,new ArrayList<>()));
-            System.out.println("field wait");
 
         }
 
         if(SelectedLevel.equals("Main Level")){
 
             MainWaitList.add(new Client(Name, Email, PhoneNumber, SeatsCnt, SeatsCnt,new ArrayList<>()));
-            System.out.println("Main wait");
-
-
+            
         }
         
         if(SelectedLevel.equals("GrandStand Level")){
 
             GrandWaitList.add(new Client(Name, Email, PhoneNumber, SeatsCnt, SeatsCnt,new ArrayList<>()));
-            System.out.println("Grand wait");
-
-
+            
         }
 
 
@@ -276,13 +303,35 @@ public class Stadium{
 
     }
 
-    /*=== Cancel method ===
-     * @param reservation history, waitlist, section seats
-     * When a Client cancels Seats from a level, it will access the
-     * reservation history, remove those reservations, and make the
-     * Seats available again. Then, it verifies the waitlist in case a Client
-     * is waiting for Seats and offers them. 
-       ===================*/
+/*===== Cancel Method =====
+ * 
+ * The Cancel method handles the cancellation of a client's reservation and manages the waitlist and available seats. 
+ * When a client cancels a reservation, the method removes the reservation from the history and updates the seat availability. 
+ * If clients are on the waitlist, the method attempts to offer the cancelled seats to the first client in the waitlist. 
+ * If all the requested seats are fulfilled for a client, they are added to the reservations and their details are updated. 
+ * If there are remaining unfulfilled seat requests, the client's original seat count is adjusted accordingly. 
+ * Finally, the newly available seats are returned to the respective seating section.
+ * 
+ * Purpose:
+ * - To cancel a reservation, update the seat availability, and manage the waitlist by offering cancelled seats to clients waiting for seats.
+ * - Ensures that the waitlist is processed in the order clients requested their seats.
+ * - Updates reservation history and available seats according to the cancelled reservations and waitlist status.
+ * 
+ * Parameters:
+ * - historyStack: A Stack of HashMaps representing the reservation history, where each HashMap contains a client’s name and their reserved seats.
+ * - WaitList: A Queue of Client objects representing the clients waiting for seats, ordered by their arrival.
+ * - SectionSeats: A Set of Seats representing the available seats in the section that will be updated after the cancellation.
+ * 
+ * Return Value:
+ * - void: This method does not return a value. It modifies the reservation history, the waitlist, and the available seats for the section.
+ * 
+ * Calls:
+ * - None: This method directly interacts with the reservation history stack, waitlist queue, and section seat set.
+ * 
+ * Called By:
+ * - The Menu system or a user interface: The `Cancel` method is called when a user opts to cancel a reservation in the ticket reservation system.
+ */
+
     public void Cancel(Stack<HashMap<String, ArrayList<Seats>>> historyStack, Queue<Client> WaitList, Set<Seats> SectionSeats){
 
         if(historyStack.isEmpty()){
@@ -313,9 +362,6 @@ public class Stadium{
 
 
         }
-
-            
-
         
         /*
          * If they are Clients waiting for Seats in that level, it starts offering these Seats
@@ -341,7 +387,8 @@ public class Stadium{
             //If all the seats have been successfully given to that Client, it updates the information and finishes
             if(AssignedSeats.size() == CurrentClient.getClientOriginalSeatCnt() ){
 
-                System.out.println("Amount of seats wanted fullfiled ");
+                System.out.println("Latest reservation cancelled");
+                System.out.println("Clients in waitlist added to reservations\n");
     
                 //Adding client and seats to pairing hashmap
                 HashMap<String, ArrayList<Seats>> newReservation= new HashMap<>();
@@ -361,11 +408,13 @@ public class Stadium{
 
             else{ //Some seats the Client wanted were not given, so updates the Client's wanted Seats
 
-                System.out.println("Not enough seats to fulfill requirement");
+                System.out.println("Latest reservation cancelled");
+                System.out.println("Client in waitlist did not get full anount of tickets");
+                System.out.println("Added back to waitlist\n");
 
                 CurrentClient.setClientSeatCnt(CurrentClient.getClientOriginalSeatCnt()-AssignedSeats.size());
 
-                System.out.println("New amount needed: "+CurrentClient.getClientSeatCnt());
+                System.out.println("New amount needed: "+CurrentClient.getClientSeatCnt()+"\n");
 
                 
                 break;
@@ -394,12 +443,13 @@ public class Stadium{
 
         }
                 
-        //Prints new Reservation, history, and waitlist information
-        System.out.println("Reservations: "+ Reservations);
-        System.out.println();
-        System.out.println("Stack: "+ historyStack);
+        // //Prints new Reservation, history, and waitlist information
+        // System.out.println("Reservations: "+ Reservations);
+        // System.out.println();
+        // System.out.println("Stack: "+ historyStack);
 
-        System.out.println("Queue: "+ WaitList+"\n");
+        // System.out.println("Queue: "+ WaitList+"\n");
+        //omitted for final version
 
 
     }

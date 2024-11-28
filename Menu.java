@@ -5,14 +5,53 @@ import java.util.Iterator;
 
 /*===== MENU class =====
  * 
- * The Menu class is the main class for this proyect and uses
- * the Stadium class for its reservation system. The Menu allows
- * the Client to order tickets, show all available tickets, enter a
- * waitlist if they wish to wait for a Seat, and to cancel reservations.
+ * The Menu class serves as the primary interface for this ticket reservation system.
+ * It interacts with the Stadium class to manage ticket reservations, cancellations,
+ * and waitlists. This system provides functionality for clients to order tickets, view
+ * available tickets, join a waitlist, and cancel reservations.
  * 
-  =====================*/
+ * Data Structures Used:
+ * - ArrayList: Used to store the reserved seats for clients. ArrayLists are used here 
+ *   because they allow dynamic resizing and efficient access to elements when managing 
+ *   reservations.
+ * - HashMap: Utilized to associate clients with their reserved seats for quick lookup 
+ *   and organization. This is beneficial for tracking transactions and managing the 
+ *   reservation history.
+ * - Iterator: Used for iterating through seat collections to allocate and reserve seats.
+ * 
+ */
+
 
 public class Menu {
+
+    /*===== getValidChoice Method =====
+ * 
+ * The getValidChoice method is responsible for ensuring user input matches one of 
+ * two valid choices: "Y" or "N". It provides robust input validation by prompting 
+ * the user repeatedly until a valid response is entered. This method ensures consistent 
+ * and reliable interaction with the system for binary decisions.
+ * 
+ * Purpose:
+ * - Validate and standardize user input for yes/no decisions.
+ * - Ensure the user receives clear prompts and guidance during input.
+ * 
+ * Parameters:
+ * - Scanner: A Scanner object used to read user input from the console.
+ * - String prompt: A message displayed to the user, asking them for input.
+ * 
+ * Returns:
+ * -A valid response from the user, either "Y" or "N" as the variable "choice" 
+ * which is a String
+ *  
+ * Calls:
+ * - Scanner: Reads user input from the console for validation.
+ * -toUpperCase(): changes input to uppercase to comply with if statement conditions
+ * 
+ * Called By:
+ *   -Any part of the Menu class where user input is required 
+ *    to confirm choice, such as entering a waitlist or confirming an action.
+ * 
+ */
 
     public String GetValidChoice(Scanner scanner, String prompt){ //Returns Client's choice once validated
 
@@ -49,7 +88,39 @@ public class Menu {
         return choice;
 
     }
-    
+
+/*===== getValidInput Method =====
+ * 
+ * The getValidInput method ensures that user input matches one of the specified 
+ * valid options provided in an array. This method repeatedly prompts the user 
+ * until a valid response is entered, ensuring accurate and consistent interaction 
+ * with the system for multiple-choice inputs.
+ * 
+ * Purpose:
+ * - Validate and standardize user input for multiple-choice selections.
+ * - Guide the user in making correct input decisions by providing clear prompts 
+ *   and re-prompting if necessary.
+ * 
+ * Parameters:
+ * - Scanner input: A Scanner object used to read user input from the console.
+ * - String prompt: A message displayed to the user, asking them for input.
+ * - String[] validOptions: An array of valid options against which the user's 
+ *   input is validated.
+ * 
+ * Return Value:
+ * - A String representing a valid user input that matches one of the specified 
+ *   options.
+ * 
+ * Calls:
+ * - Scanner: Reads user input from the console for validation.
+ * 
+ * Called By:
+ * - Any part of the Menu class requiring user input to match one of several 
+ *   predefined options, such as selecting a seating section or confirming 
+ *   a reservation action.
+ * 
+ */
+
     public int GetValidInput(Scanner scanner, int min, int max, String errorPrompt){ //Returns Client's Input once validated
 
         int input= -1;
@@ -84,6 +155,35 @@ public class Menu {
         return input;
 
     }
+
+
+/*===== getValidLevelInput Method =====
+ * 
+ * The getValidLevelInput method is responsible for validating and ensuring that 
+ * the user's input matches one of the predefined seating levels: "1", "2", or "3". 
+ * This method repeatedly prompts the user until a valid input is entered, ensuring 
+ * accurate and reliable interaction with the system for selecting seating levels.
+ * 
+ * Purpose:
+ * - Validate user input to ensure it corresponds to an available seating level.
+ * - Provide a clear and user-friendly interface for level selection.
+ * 
+ * Parameters:
+ * - Scanner input: A Scanner object used to read user input from the console.
+ * - String prompt: A message displayed to the user, asking them to select a seating level.
+ * 
+ * Return Value:
+ * - A String representing a valid seating level ("1", "2", or "3") selected by the user.
+ * 
+ * Calls:
+ * - Scanner: Reads user input from the console for validation.
+ * 
+ * Called By:
+ * - Any part of the Menu class where the user must select a seating level, such as 
+ *   reserving tickets or viewing available seats by level.
+ * 
+ */
+
 
     public int GetValidLevelInput(Scanner scanner, int min, int max){ //Returns Client's Level Input once validated
 
@@ -120,6 +220,41 @@ public class Menu {
 
 
     }
+
+/*===== orderTickets Method =====
+ * 
+ * The orderTickets method handles the ticket reservation process for clients. 
+ * It prompts the user to select a seating level, specifies the number of tickets 
+ * they want to purchase, and reserves the requested seats if available. If the 
+ * desired number of seats is not available, the user is offered the option to 
+ * join a waitlist.
+ * 
+ * Purpose:
+ * - Facilitate ticket reservations by allowing users to select levels and 
+ *   reserve seats based on availability.
+ * - Manage waitlisting when the desired number of seats cannot be fulfilled.
+ * 
+ * Parameters:
+ * - Scanner input: A Scanner object used to read user input from the console.
+ * 
+ * Return Value:
+ * - void: This method does not return a value. It directly handles ticket 
+ *   reservation logic and updates the system's state as needed.
+ * 
+ * Calls:
+ * - getValidLevelInput(): Validates and retrieves a seating level input from the user.
+ * - Stadium.reserveSeats(): Attempts to reserve seats for the user at the selected level.
+ * - Stadium.addToWaitlist(): Adds the user to the waitlist if the requested seats 
+ *   are unavailable.
+ * - getValidChoice(): Validates and retrieves a yes/no response from the user when 
+ *   asked to join the waitlist.
+ * 
+ * Called By:
+ * - The Menu class's main control loop or options menu, when the user selects 
+ *   the option to reserve tickets.
+ * 
+ */
+
 
     public static void orderTickets(Scanner scanner, Stadium stadium, Menu menu, ArrayList<Seats> reservedSeats) {
         System.out.println("Choose Level:");
@@ -347,14 +482,11 @@ public class Menu {
         System.out.println(Email);
         System.out.println(PhoneNumber);
         System.out.println("Seats ordered: " + SeatsCnt + " in " + SelectedLevel);
-        System.out.println(reservedSeats);
+        // System.out.println(reservedSeats);  omitted for final version
         /*===========================================*/
     
         //Confirms the user as a Client
         Client client = new Client(Name, Email, PhoneNumber, SeatsCnt, SeatsCnt, reservedSeats);
-    
-        //Shows the Client's Seats
-        System.out.println("Seats reserved by client: " + client.getClientSeatCnt());
     
         // Adding current transaction to hashmap to match clients to seats reserved
         stadium.ClientReservationList.put(client.getClientName(), new ArrayList<>(reservedSeats));
@@ -377,8 +509,9 @@ public class Menu {
             stadium.GrandStandHistory.push(new HashMap<>(currentReservation));
         }
     
-        System.out.println("\nSeat reservations map: " + stadium.ClientReservationList); // Shows hashmap for testing
-        System.out.println("\nStadium reservation linkedlist: " + stadium.Reservations); // Shows linkedlist for testing
+        // System.out.println("\nSeat reservations map: " + stadium.ClientReservationList); // Shows hashmap for testing
+        // System.out.println("\nStadium reservation linkedlist: " + stadium.Reservations); // Shows linkedlist for testing
+        //omitted for final version
     
         // Clearing references after adding stack
         stadium.ClientReservationList.clear();
@@ -389,6 +522,36 @@ public class Menu {
         System.out.println("Seats left in Main Level: " + stadium.getMainLevelSeatCount());
         System.out.println("Seats left in GrandStand Level: " + stadium.getGrandStandLevelSeatCount() + "\n");
     }
+
+
+/*===== handleCancelReservation Method =====
+ * 
+ * The handleCancelReservation method manages the process of canceling a reservation. 
+ * This method cancels (removes) the latest reservation done in the specified section
+ * ,if reservations have been done, and adds canceled seats to clients that are in the
+ * waitlist, if clients exist in waitlist.
+ * 
+ * Purpose:
+ * - Allow users to cancel their ticket reservations.
+ * - Update seat availability and manage the waitlist when reservations are canceled.
+ * 
+ * Parameters:
+ * - Scanner input: A Scanner object used to read user input from the console.
+ * 
+ * Return Value:
+ * - void: This method does not return a value. It modifies the system's reservation 
+ *   and waitlist states as needed.
+ * 
+ * Calls:
+ * - Stadium.getReservations(): Retrieves the reservations for the user.
+ * - Stadium.cancelReservation(): Cancels the reservation for the specified user.
+ * - Stadium.handleWaitlist(): Allocates seats to users on the waitlist after a cancellation.
+ * 
+ * Called By:
+ * - The Menu class's main control loop or options menu, when the user selects 
+ *   the option to cancel a reservation.
+ * 
+ */
 
     public static void handleCancelReservation(Scanner scanner, Menu menu, Stadium stadium) { //Handles the cancelled reservation in a Client's given level
         System.out.println("   Cancel Reservation\n");
@@ -402,13 +565,13 @@ public class Menu {
     
         //Removes last reservation of given level
         if (input == 1) {
-            System.out.println("Field cancel");
+            
             stadium.Cancel(stadium.FieldHistory, stadium.FieldWaitList, stadium.FieldLevelSeats);
         } else if (input == 2) {
-            System.out.println("Main cancel");
+            
             stadium.Cancel(stadium.MainHistory, stadium.MainWaitList, stadium.MainLevelSeats);
         } else if (input == 3) {
-            System.out.println("GrandStand cancel");
+            
             stadium.Cancel(stadium.GrandStandHistory, stadium.GrandWaitList, stadium.GrandStandLevelSeats);
         }
     }
@@ -430,12 +593,33 @@ public class Menu {
     }
 
 
-    /*=== Main method ===
-     * It runs the whole Menu using past defined functions. It allows
-     * to order and cancel available tickets, as well as show the
-     * available tickets and enter a waitlist for Seats. Once finished,
-     * you can Exit to close the Menu and the proyect.
-      ==================*/
+/*===== Main Method =====
+ * 
+ * The main method serves as the entry point for the Menu-driven ticket reservation system. 
+ * It integrates all core functionalities, allowing users to order tickets, cancel reservations, 
+ * view available seats, join a waitlist, and exit the system.
+ * 
+ * Purpose:
+ * - Serve as the control loop for the application, enabling user interaction with the system.
+ * - Provide access to all functionalities, such as ordering tickets, canceling reservations, 
+ *   managing the waitlist, and displaying available seats.
+ * 
+ * Parameters:
+ * - None: The main method does not accept any parameters.
+ * 
+ * Return Value:
+ * - void: This method does not return a value as it runs the application.
+ * 
+ * Calls:
+ * - Menu methods (orderTickets, handleCancelReservation, displayAvailableSeats, etc.): 
+ *   Executes user-selected options.
+ * - getValidChoice(): Ensures valid user input for menu navigation.
+ * 
+ * Called By:
+ * - The Java Virtual Machine to start the execution of the program.
+ * 
+ */
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
     
